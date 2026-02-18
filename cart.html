@@ -17,34 +17,52 @@
 </nav>
 
 <section class="cart-section">
-    <table>
+    <table id="cart-table">
         <tr>
             <th>Product</th>
             <th>Price</th>
             <th>Quantity</th>
             <th>Total</th>
         </tr>
-        <tr>
-            <td>Notebook</td>
-            <td>₹50</td>
-            <td>1</td>
-            <td>₹50</td>
-        </tr>
-        <tr>
-            <td>Pen Pack</td>
-            <td>₹30</td>
-            <td>2</td>
-            <td>₹60</td>
-        </tr>
     </table>
 
-    <h3 class="grand-total">Grand Total: ₹110</h3>
-    <button class="checkout-btn">Proceed to Checkout</button>
+    <h3 id="grand-total"></h3>
+    <button onclick="checkout()">Proceed to Checkout</button>
 </section>
 
 <footer>
     <p>© 2026 PaperNest Stationery Shop</p>
 </footer>
 
+<script>
+function loadCart() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let table = document.getElementById("cart-table");
+    let grandTotal = 0;
+
+    cart.forEach(item => {
+        let row = table.insertRow();
+        row.insertCell(0).innerText = item.name;
+        row.insertCell(1).innerText = "₹" + item.price;
+        row.insertCell(2).innerText = item.quantity;
+        row.insertCell(3).innerText = "₹" + (item.price * item.quantity);
+
+        grandTotal += item.price * item.quantity;
+    });
+
+    document.getElementById("grand-total").innerText =
+        "Grand Total: ₹" + grandTotal;
+}
+
+function checkout() {
+    alert("Thank you for your purchase!");
+    localStorage.removeItem("cart");
+    location.reload();
+}
+
+loadCart();
+</script>
+
 </body>
 </html>
+
